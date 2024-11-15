@@ -6,4 +6,5 @@ public enum Hand {
     DOUBLE_PAIR,
     THREE_OF_KIND,
     FULL_HOUSE,
+    FLUSH,
 }

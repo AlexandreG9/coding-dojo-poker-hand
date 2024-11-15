@@ -21,10 +21,7 @@ class HandResolverTest {
         })
         void should_be_full_house(String hand) {
             // When
-            Hand result = HandResolver.resolveHand(hand);
-
-            // Then
-            assertEquals(FULL_HOUSE, result);
+            assertHand(hand, FULL_HOUSE);
         }
 
         @Test
@@ -48,8 +45,7 @@ class HandResolverTest {
                 "9D 3C 4C 5C 9H",
         })
         void should_be_pair(String hand) {
-            Hand result = HandResolver.resolveHand(hand);
-            assertEquals(PAIR, result);
+            assertHand(hand, PAIR);
         }
 
         @ParameterizedTest
@@ -71,8 +67,7 @@ class HandResolverTest {
                 "2H 3C 4C 4C 4H",
         })
         void should_be_brelan(String hand) {
-            Hand result = HandResolver.resolveHand(hand);
-            assertEquals(THREE_OF_KIND, result);
+            assertHand(hand, THREE_OF_KIND);
         }
 
         @ParameterizedTest
@@ -94,8 +89,7 @@ class HandResolverTest {
                 "2H 3C 3C 4C 4H",
         })
         void should_be_double_pair(String hand) {
-            Hand result = HandResolver.resolveHand(hand);
-            assertEquals(DOUBLE_PAIR, result);
+            assertHand(hand, DOUBLE_PAIR);
         }
 
         @ParameterizedTest
@@ -108,4 +102,36 @@ class HandResolverTest {
             assertNotEquals(DOUBLE_PAIR, result);
         }
     }
+
+    @Nested
+    class FlushTest {
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "2H 2H 9H 5H 9H",
+                "2S 4S 8S 4S 8S",
+                "2C 3C 3C 4C 4C",
+                "2D 3D 3D 4D 4D",
+        })
+        void should_be_flush(String hand) {
+            assertHand(hand, FLUSH);
+        }
+
+        @Test
+        void shloud_not_be_flush() {
+            assertNotHand("2D 3C 3H 4D 4D", FLUSH);
+        }
+    }
+
+    private static void assertHand(String actualHand, Hand expectedHand) {
+        Hand result = HandResolver.resolveHand(actualHand);
+        assertEquals(expectedHand, result);
+    }
+
+    private static void assertNotHand(String actualHand, Hand expectedHand) {
+        Hand result = HandResolver.resolveHand(actualHand);
+        assertNotEquals(expectedHand, result);
+
+    }
+
+
 }
