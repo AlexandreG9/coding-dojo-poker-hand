@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static fr.aguiheneuf.poker.enumeration.Hand.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -23,7 +24,7 @@ class HandResolverTest {
             Hand result = HandResolver.resolveHand(hand);
 
             // Then
-            assertEquals(Hand.FULL_HOUSE, result);
+            assertEquals(FULL_HOUSE, result);
         }
 
         @Test
@@ -32,7 +33,7 @@ class HandResolverTest {
 
             Hand result = HandResolver.resolveHand(hand);
 
-            assertNotEquals(Hand.FULL_HOUSE, result);
+            assertNotEquals(FULL_HOUSE, result);
         }
     }
 
@@ -48,7 +49,7 @@ class HandResolverTest {
         })
         void should_be_pair(String hand) {
             Hand result = HandResolver.resolveHand(hand);
-            assertEquals(Hand.PAIR, result);
+            assertEquals(PAIR, result);
         }
 
         @ParameterizedTest
@@ -57,7 +58,7 @@ class HandResolverTest {
         })
         void should_not_be_pair(String hand) {
             Hand result = HandResolver.resolveHand(hand);
-            assertNotEquals(Hand.PAIR, result);
+            assertNotEquals(PAIR, result);
         }
     }
 
@@ -71,7 +72,7 @@ class HandResolverTest {
         })
         void should_be_brelan(String hand) {
             Hand result = HandResolver.resolveHand(hand);
-            assertEquals(Hand.THREE_OF_KIND, result);
+            assertEquals(THREE_OF_KIND, result);
         }
 
         @ParameterizedTest
@@ -80,7 +81,31 @@ class HandResolverTest {
         })
         void should_not_be_brelan(String hand) {
             Hand result = HandResolver.resolveHand(hand);
-            assertNotEquals(Hand.THREE_OF_KIND, result);
+            assertNotEquals(THREE_OF_KIND, result);
+        }
+    }
+
+    @Nested
+    class DoublePairTest {
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "2H 2C 9C 5C 9H",
+                "2H 4C 8C 4C 8H",
+                "2H 3C 3C 4C 4H",
+        })
+        void should_be_double_pair(String hand) {
+            Hand result = HandResolver.resolveHand(hand);
+            assertEquals(DOUBLE_PAIR, result);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "9H 4C 4C 4C 9H",
+                "2H 1C 3C 5C 4H",
+        })
+        void should_not_be_double_pair(String hand) {
+            Hand result = HandResolver.resolveHand(hand);
+            assertNotEquals(DOUBLE_PAIR, result);
         }
     }
 }

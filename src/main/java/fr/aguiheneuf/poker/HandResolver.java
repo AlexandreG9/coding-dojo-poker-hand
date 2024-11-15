@@ -32,6 +32,10 @@ public class HandResolver {
             return Hand.THREE_OF_KIND;
         }
 
+        if (isDoublePair(cards)) {
+            return Hand.DOUBLE_PAIR;
+        }
+
         if (isPair(cards)) {
             return Hand.PAIR;
         }
@@ -57,9 +61,12 @@ public class HandResolver {
         return groupedCard.entrySet().stream().anyMatch(e -> e.getValue().size() == 2);
     }
 
-    private static boolean isDoublePai(List<Card> cards) {
+    private static boolean isDoublePair(List<Card> cards) {
         var groupedCard = getGroupedCard(cards);
 
+        return groupedCard.entrySet().stream()
+                .filter(e -> e.getValue().size() == 2)
+                .count() == 2;
     }
 
     private static boolean isBrelan(List<Card> cards) {
